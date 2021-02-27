@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
 import { cloneDeep } from "loadsh";
+import Card from "./Card";
 
 function App() {
   const [data, setData] = useState({
@@ -31,32 +32,32 @@ function App() {
     },
   });
 
-  var cloned = cloneDeep(data);
+  // var cloned = cloneDeep(data);
   const [flag, setFlag] = useState(false);
 
   const catchInfo = (id, nome, idade) => {
-    // setData((oldData) => {
-    //   return {
-    //     ...oldData,
-    //     [`card#${id + 1}`]: { ...oldData[`card#${id + 1}`], nome, idade },
-    //   };
-    // });
-    cloned = {
-      ...cloned,
-      [`card#${id + 1}`]: { ...cloned[`card#${id + 1}`], nome, idade },
-    };
+    setData((oldData) => {
+      return {
+        ...oldData,
+        [`card#${id + 1}`]: { ...oldData[`card#${id + 1}`], nome, idade },
+      };
+    });
+    // cloned = {
+    //   ...cloned,
+    //   [`card#${id + 1}`]: { ...cloned[`card#${id + 1}`], nome, idade },
+    // };
   };
 
-  useEffect(() => {
-    let myVar = window.setTimeout(() => {
-      setData(cloned);
-      setFlag(false);
-    }, 200);
+  // useEffect(() => {
+  //   let myVar = window.setTimeout(() => {
+  //     setData(cloned);
+  //     setFlag(false);
+  //   }, 200);
 
-    return () => {
-      clearTimeout(myVar);
-    };
-  }, [flag]);
+  //   return () => {
+  //     clearTimeout(myVar);
+  //   };
+  // }, [flag]);
 
   return (
     <div
@@ -86,7 +87,7 @@ function App() {
           flexWrap: "wrap",
         }}
       >
-        {Object.entries(cloned).map(([key, value], i) => {
+        {Object.entries(data).map(([key, value], i) => {
           return (
             <Card
               {...value}
@@ -101,47 +102,5 @@ function App() {
     </div>
   );
 }
-
-const Card = (props) => {
-  const { nome, idade, altura, catchInfo, i, flag } = props;
-
-  const [name, setName] = useState(nome);
-  const [age, setAge] = useState(idade);
-  const [isModified, setIsModified] = useState(false);
-
-  if (flag) {
-    catchInfo(i, name, age);
-  }
-
-  useEffect(() => {
-    if (name !== nome || age !== idade) {
-      setIsModified(true);
-    } else setIsModified(false);
-  }, [name, age, props]);
-
-  return (
-    <div style={{ border: "1px solid black", width: "30%", margin: "40px" }}>
-      <h3>
-        {isModified && "*"}Nome: {nome}
-      </h3>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
-      />
-      <p>Idade: {idade} anos</p>
-      <input
-        type="number"
-        value={age}
-        onChange={(e) => {
-          setAge(parseInt(e.target.value));
-        }}
-      />
-      <p>Altura: {altura} metros</p>
-    </div>
-  );
-};
 
 export default App;
