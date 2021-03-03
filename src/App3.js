@@ -1,26 +1,11 @@
 import React, { useState } from "react";
 import "./index.css";
-import Card from "./Card2";
+import Card from "./Card3";
+import { data, clonedData } from "./data";
 
-function App2() {
+function App3() {
   console.log("ReRender APP");
-  const [data, setData] = useState([
-    "rodrigo",
-    "luciana",
-    "marlon",
-    "pablo",
-    "michel",
-  ]);
-
   const [reRender, setReRender] = useState(false);
-
-  const catchInfo = (nome, i) => {
-    console.log("Prop Lifting Called");
-    let newArray = data;
-    newArray[i] = nome;
-
-    setData(newArray);
-  };
 
   return (
     <div
@@ -28,17 +13,24 @@ function App2() {
       style={{ padding: "40px", textAlign: "center", background: "#f0f0f0" }}
     >
       <h1>React boladão</h1>
-      {data.map((x, i) => {
+      {clonedData.map((x, i) => {
         return <p key={i}>{x}</p>;
       })}
       <button
         onClick={() => {
+          console.log("Clicado");
           setReRender(!reRender);
         }}
       >
         Pegar Info
       </button>
-
+      <button
+        onClick={() => {
+          console.log(clonedData);
+        }}
+      >
+        Console
+      </button>
       <div
         style={{
           padding: "40px",
@@ -46,12 +38,12 @@ function App2() {
           flexWrap: "wrap",
         }}
       >
-        {data.map((value, i) => {
-          return <Card nome={value} key={i} i={i} catchInfo={catchInfo} />;
+        {clonedData.map((value, i) => {
+          return <Card nome={value} key={i} i={i} />;
         })}
       </div>
     </div>
   );
 }
 
-export default App2;
+export default App3;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 
 const Card2 = (props) => {
   const { nome, catchInfo, i } = props;
@@ -12,9 +12,16 @@ const Card2 = (props) => {
   }, [nome]);
 
   useEffect(() => {
-    catchInfo(name, i);
+    let timeout = window.setTimeout(() => {
+      catchInfo(name, i);
+    }, 1000);
+
     if (name !== nome) setIsModified(true);
     else setIsModified(false);
+
+    return () => {
+      window.clearTimeout(timeout);
+    };
   }, [name]);
 
   return (
@@ -27,11 +34,12 @@ const Card2 = (props) => {
         type="text"
         value={name}
         onChange={(e) => {
-          setName(e.target.value);
+          let value = e.target.value;
+          setName(value);
         }}
       />
     </div>
   );
 };
 
-export default Card2;
+export default memo(Card2);
